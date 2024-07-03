@@ -12,7 +12,7 @@ import { FirebaseError } from "firebase/app";
 import Image from "next/image";
 import { FormEvent, useState } from "react";
 import signUp from "../firebase/signUp";
-import { useRouter } from "next/router";
+import { useRouter } from "next/navigation";
 import signIn from "../firebase/signIn";
 
 const FormLogin = () => {
@@ -24,14 +24,6 @@ const FormLogin = () => {
 
   const handleSelectionChange = (key: any) => {
     setSelected(key);
-  };
-
-  const handleEmailInput = (email: string) => {
-    setEmail(email);
-  };
-
-  const handlePasswordInput = (password: string) => {
-    setPassword(password);
   };
 
   const handleFormSubmit = async (event: FormEvent) => {
@@ -103,7 +95,7 @@ const FormLogin = () => {
                   placeholder="Digite o seu e-mail"
                   type="email"
                   value={email}
-                  onValueChange={handleEmailInput}
+                  onChange={(e) => setEmail(e.target.value)}
                 />
                 <Input
                   isRequired
@@ -111,7 +103,7 @@ const FormLogin = () => {
                   placeholder="Digite a sua senha"
                   type="password"
                   value={password}
-                  onValueChange={handlePasswordInput}
+                  onChange={(e) => setPassword(e.target.value)}
                 />
                 <p className="text-center text-small">
                   <span className="text-white">Precisa criar uma conta? </span>
@@ -124,7 +116,7 @@ const FormLogin = () => {
                   </Link>
                 </p>
                 <div className="flex gap-2 justify-end">
-                  <Button fullWidth className="bg-yellow-600">
+                  <Button fullWidth className="bg-yellow-600" type="submit">
                     <span className="font-semibold">Entrar</span>
                   </Button>
                 </div>
@@ -132,23 +124,29 @@ const FormLogin = () => {
             </Tab>
             <Tab key="sign-up" title="Cadastro">
               <form onSubmit={handleUserRegister} className="flex flex-col gap-4 h-[300px]">
-                <Input
+              <Input
                   isRequired
-                  label="Nome"
+                  label="Name"
                   placeholder="Digite o seu nome"
-                  type="password"
+                  type="text"
+                  value={name}
+                  onChange={(e) => setName(e.target.value)}
                 />
                 <Input
                   isRequired
-                  label="E-mail"
-                  placeholder="Digite o seu e-mail"
+                  label="Email"
+                  placeholder="Digite o seu email"
                   type="email"
+                  value={email}
+                  onChange={(e) => setEmail(e.target.value)}
                 />
                 <Input
                   isRequired
-                  label="Senha"
+                  label="Password"
                   placeholder="Digite a sua senha"
                   type="password"
+                  value={password}
+                  onChange={(e) => setPassword(e.target.value)}
                 />
                 <p className="text-center text-small">
                   <span className="text-white">Já tem uma conta? </span>
@@ -161,7 +159,7 @@ const FormLogin = () => {
                   </Link>
                 </p>
                 <div className="flex gap-2 justify-end">
-                  <Button fullWidth className="bg-yellow-600">
+                  <Button fullWidth className="bg-yellow-600" type="submit">
                     <span className="font-semibold">Cadastrar-se</span>
                   </Button>
                 </div>
