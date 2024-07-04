@@ -20,7 +20,7 @@ export default function App() {
     <>
       {userAuth && (
         <div>
-          <Home />
+          <Home logout={logout}/>
         </div>
       )}
     </>
