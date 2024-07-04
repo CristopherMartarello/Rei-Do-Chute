@@ -66,5 +66,6 @@ describe("Process user usecase unit test", () => {
         expect(result.email).toEqual(expectedOutput.email)
         expect(result.password).toEqual(expectedOutput.password)
         expect(result.profile).toEqual(expectedOutput.profile)
+        
     });
 });
