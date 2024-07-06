@@ -7,7 +7,7 @@ import { AuthProvider } from "./context/AuthProvider";
 const inter = Inter({ subsets: ["latin"] });
 
 export const metadata: Metadata = {
-  title: "Rei do Chute - Mostre a força do seu palpite aqui.",
+  title: "Rei do Chute",
   description: "Created by Cristopher Martarello and Nathan Will Martins",
 };
 
@@ -18,6 +18,7 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
+      <link rel="icon" href="/LogoReiDoChute.svg" />
       <body className={inter.className}>
         <Providers>
           <AuthProvider>
