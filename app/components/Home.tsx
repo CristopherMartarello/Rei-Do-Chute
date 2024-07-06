@@ -1,14 +1,12 @@
 import { Button } from "@nextui-org/react";
+import Header from "./Header";
+import RoundPanel from "./RoundPanel";
 
-interface HomeProps {
-    logout: () => void
-}
-
-const Home = ({logout}: HomeProps) => {
+const Home = () => {
     return (
         <div>
-            <div>Oi, você está logado! (exibir os palpites da rodada)</div>
-            <Button onClick={logout}>Deslogar</Button>
+            <Header />
+            <RoundPanel />
         </div>
     );
 }
