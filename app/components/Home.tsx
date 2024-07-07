@@ -1,14 +1,18 @@
-import { Button } from "@nextui-org/react";
+import { Match, MatchDoc } from "../firebase/matches";
 import Header from "./Header";
 import RoundPanel from "./RoundPanel";
 
-const Home = () => {
-    return (
-        <div>
-            <Header />
-            <RoundPanel />
-        </div>
-    );
+interface HomeProps {
+  matchData: MatchDoc[];
 }
- 
+
+const Home = ({ matchData }: HomeProps) => {
+  return (
+    <div>
+      <Header />
+      <RoundPanel matchData={matchData}/>
+    </div>
+  );
+};
+
 export default Home;

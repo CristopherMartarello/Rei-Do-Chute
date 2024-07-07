@@ -7,7 +7,7 @@ const Header = () => {
     const { userAuth, logout } = useAuthContext();
 
     return (
-        <div className="flex justify-between px-3 w-full h-20 items-center bg-zinc-950">
+        <div className="flex justify-between px-3 w-full h-20 items-center bg-neutral-950">
             {/*LOGO*/}
             <Image src={"/LogoSecundariaReiDoChute.png"} alt={"Logo Rei do Chute"} height={130} width={130} className="object-cover" />
             {/*MENU*/}
