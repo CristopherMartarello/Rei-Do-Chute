@@ -12,8 +12,8 @@ export default class UserTips {
         this._tips = props.tips;
     }
 
-    get id(): string[]{
-        return this._tips;
+    get id(): string{
+        return this._id;
     }
 
     get tips(): string[]{
