@@ -3,6 +3,7 @@ import { Inter } from "next/font/google";
 import "./globals.css";
 import { Providers } from "./providers/nextui";
 import { AuthProvider } from "./context/AuthProvider";
+import { TipSelectionProvider } from "./context/TipsContext";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -22,7 +23,9 @@ export default function RootLayout({
       <body className={inter.className}>
         <Providers>
           <AuthProvider>
-            {children}
+            <TipSelectionProvider>
+              {children}
+            </TipSelectionProvider>
           </AuthProvider>
         </Providers>
       </body>

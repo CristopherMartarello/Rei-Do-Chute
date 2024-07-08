@@ -1,24 +1,28 @@
+'use client'
 import { Button, ButtonGroup, Divider } from "@nextui-org/react";
 import Image from "next/image";
 import { Match } from "../firebase/matches";
 import { useEffect, useState } from "react";
-import UserTips from "../utils/user-tips/entity/user-tips";
+import { useTipSelection } from "../context/TipsContext";
 
 interface MatchItemProps {
   matchData: Match;
 }
 
 const MatchItem = ({ matchData }: MatchItemProps) => {
-  console.log(matchData);
   const [logoTime1, setLogoTime1] = useState("");
   const [logoTime2, setLogoTime2] = useState("");
   const [selectedTeam, setSelectedTeam] = useState<string | null>(null);
-  const userTips = new UserTips({ id: matchData.id, tips: [] });
+  const { userTips, handleTipSelection } = useTipSelection();
 
   useEffect(() => {
     renderLogoTime1();
     renderLogoTime2();
   }, [matchData]);
+
+  useEffect(() => {
+    console.log(userTips);
+  }, []);
 
   const renderLogoTime1 = () => {
     switch (matchData.time1) {
@@ -154,15 +158,6 @@ const MatchItem = ({ matchData }: MatchItemProps) => {
     }
   };
 
-  const handleTipClick = (selectedButton: string) => {
-    if (selectedTeam === selectedButton) {
-      setSelectedTeam(null);
-    } else {
-      setSelectedTeam(selectedButton);
-      userTips.addTip(selectedButton);
-    }
-  };
-
   return (
     <div className="flex flex-col justify-center items-center p-3 m-[4px] gap-[7px] bg-neutral-900 rounded-xl">
       <div className="flex justify-between">
@@ -184,21 +179,21 @@ const MatchItem = ({ matchData }: MatchItemProps) => {
         <ButtonGroup size="sm">
           <Button
             className="bg-zinc-600 text-white w-20"
-            onClick={() => handleTipClick(matchData.time1)}
+            onClick={() => handleTipSelection(matchData.time1)}
             disabled={!!selectedTeam && selectedTeam !== matchData.time1}>
             {matchData.time1}
           </Button>
           <Divider className="bg-yellow-400" orientation="vertical" />
           <Button
             className="bg-zinc-600 text-white w-20"
-            onClick={() => handleTipClick("Empate")}
+            onClick={() => handleTipSelection(`Empate (${matchData.time1} x ${matchData.time2})`)}
             disabled={!!selectedTeam && selectedTeam !== "Empate"}>
             Empate
           </Button>
           <Divider className="bg-yellow-400" orientation="vertical" />
           <Button
             className="bg-zinc-600 text-white w-20"
-            onClick={() => handleTipClick(matchData.time1)}
+            onClick={() => handleTipSelection(matchData.time2)}
             disabled={!!selectedTeam && selectedTeam !== matchData.time2}>
             {matchData.time2}
           </Button>
