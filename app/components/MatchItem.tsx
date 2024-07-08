@@ -15,7 +15,7 @@ const MatchItem = ({ matchData }: MatchItemProps) => {
   useEffect(() => {
     renderLogoTime1();
     renderLogoTime2();
-  });
+  }, [matchData]);
 
   const renderLogoTime1 = () => {
     switch (matchData.time1) {
@@ -79,6 +79,8 @@ const MatchItem = ({ matchData }: MatchItemProps) => {
       case "Vitória":
         setLogoTime1("/times/vitoria.png");
         break;
+      default:
+        setLogoTime1("/times/default.png"); 
     }
   };
 
@@ -144,6 +146,8 @@ const MatchItem = ({ matchData }: MatchItemProps) => {
       case "Vitória":
         setLogoTime2("/times/vitoria.png");
         break;
+      default:
+        setLogoTime2("/times/default.png"); 
     }
   };
 
@@ -156,13 +160,15 @@ const MatchItem = ({ matchData }: MatchItemProps) => {
       </div>
       <div className="flex justify-center items-center gap-[7px]">
         {/* Logo time 1 */}
-        <Image
-          src={logoTime1}
-          alt={"Logo do Time 1"}
-          width={30}
-          height={25}
-          className="object-cover"
-        />
+        {logoTime1 && (
+          <Image
+            src={logoTime1}
+            alt={"Logo do Time 1"}
+            width={30}
+            height={25}
+            className="object-cover"
+          />
+        )}
         <ButtonGroup size="sm">
           <Button className="bg-zinc-600 text-white w-20">
             {matchData.time1}
@@ -175,13 +181,15 @@ const MatchItem = ({ matchData }: MatchItemProps) => {
           </Button>
         </ButtonGroup>
         {/* Logo time 2 */}
-        <Image
-          src={logoTime2}
-          alt={"Logo do Time 2"}
-          width={30}
-          height={25}
-          className="object-cover"
-        />
+        {logoTime2 && (
+          <Image
+            src={logoTime2}
+            alt={"Logo do Time 2"}
+            width={30}
+            height={25}
+            className="object-cover"
+          />
+        )}
       </div>
     </div>
   );

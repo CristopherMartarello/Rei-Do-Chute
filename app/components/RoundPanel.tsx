@@ -10,12 +10,22 @@ interface RoundPanelProps {
 
 const RoundPanel = ({matchData}: RoundPanelProps) => {
   const [matches, setMatches] = useState<Match[]>([]);
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     if (matchData && matchData.length > 0) {
       setMatches(Object.values(matchData[0].partidas));
     }
   }, [matchData]);
+
+  useEffect(() => {
+    if (matches.length > 0) {
+      setLoading(true);
+      setTimeout(() => {
+        setLoading(false);
+      }, 1000); 
+    }
+  }, [matches]);
 
   return (
     <div className="flex flex-col h-full w-full bg-neutral-900">
@@ -51,7 +61,7 @@ const RoundPanel = ({matchData}: RoundPanelProps) => {
         </div>
         <div className="m-3"></div>
       </div>
-      <Button className="m-2 bg-yellow-600">
+      <Button className="m-2 bg-yellow-600" isLoading={loading}>
         <span className="font-semibold">Enviar Palpites</span>
       </Button>
     </div>
