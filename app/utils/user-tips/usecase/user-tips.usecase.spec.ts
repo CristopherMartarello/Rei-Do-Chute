@@ -4,7 +4,11 @@ import { GenerateUserTipsUseCaseInputDTO, GenerateUserTipsUseCaseOutputDTO } fro
 
 const userTips = new UserTips({
     id: "123",
-    tips: ["Flamengo", "Palmeiras", "Internacional", "Vasco", "Bahia", "Cuiabá", "Fortaleza", "Cruzeiro", "Atlético MG", "Botafogo"],
+    tips: [
+        { matchId: "match1", selectedTeam: "Team A" },
+        { matchId: "match2", selectedTeam: "Team B" },
+        { matchId: "match3", selectedTeam: "Draw (Team C vs Team D)" }
+    ],
 })
 
 const MockRepository = () => {
@@ -35,13 +39,21 @@ describe("Process user usecase unit test", () => {
 
         const input: GenerateUserTipsUseCaseInputDTO = {
             id: "123",
-            tips: ["Flamengo", "Palmeiras", "Internacional", "Vasco", "Bahia", "Cuiabá", "Fortaleza", "Cruzeiro", "Atlético MG", "Botafogo"],
-        }
+            tips: [
+              { matchId: "match1", selectedTeam: "Team A" },
+              { matchId: "match2", selectedTeam: "Team B" },
+              { matchId: "match3", selectedTeam: "Draw (Team C vs Team D)" }
+            ],
+          };
 
         const result = await usecase.executeGenerate(input)
 
         const expectedOutput: GenerateUserTipsUseCaseOutputDTO = {
-            tips: ["Flamengo", "Palmeiras", "Internacional", "Vasco", "Bahia", "Cuiabá", "Fortaleza", "Cruzeiro", "Atlético MG", "Botafogo"],
+            tips: [
+                { matchId: "match1", selectedTeam: "Team A" },
+                { matchId: "match2", selectedTeam: "Team B" },
+                { matchId: "match3", selectedTeam: "Draw (Team C vs Team D)" }
+              ],
         }
 
         expect(userRepository.generate).toHaveBeenCalledWith(expect.any(UserTips));

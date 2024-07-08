@@ -1,16 +1,23 @@
+import UserTips from "../entity/user-tips";
+
 export interface FindUserTipsUseCaseInputDTO{
     id: string;
 }
 
 export interface FindUserTipsUseCaseOutputDTO{
-    tips: string[];
+    tips: UserTip[];
 }
 
 export interface GenerateUserTipsUseCaseInputDTO{
     id: string;
-    tips: string[];
+    tips: UserTip[];
 }
 
+export interface UserTip {
+    matchId: string;
+    selectedTeam: string;
+  }
+
 export interface GenerateUserTipsUseCaseOutputDTO{
-    tips: string[];
+    tips: UserTip[];
 }

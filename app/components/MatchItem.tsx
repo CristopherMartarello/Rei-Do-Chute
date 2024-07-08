@@ -179,21 +179,21 @@ const MatchItem = ({ matchData }: MatchItemProps) => {
         <ButtonGroup size="sm">
           <Button
             className="bg-zinc-600 text-white w-20"
-            onClick={() => handleTipSelection(matchData.time1)}
+            onClick={() => handleTipSelection(matchData.time1, matchData)}
             disabled={!!selectedTeam && selectedTeam !== matchData.time1}>
             {matchData.time1}
           </Button>
           <Divider className="bg-yellow-400" orientation="vertical" />
           <Button
             className="bg-zinc-600 text-white w-20"
-            onClick={() => handleTipSelection(`Empate (${matchData.time1} x ${matchData.time2})`)}
+            onClick={() => handleTipSelection(`Empate (${matchData.time1} x ${matchData.time2})`, matchData)}
             disabled={!!selectedTeam && selectedTeam !== "Empate"}>
             Empate
           </Button>
           <Divider className="bg-yellow-400" orientation="vertical" />
           <Button
             className="bg-zinc-600 text-white w-20"
-            onClick={() => handleTipSelection(matchData.time2)}
+            onClick={() => handleTipSelection(matchData.time2, matchData)}
             disabled={!!selectedTeam && selectedTeam !== matchData.time2}>
             {matchData.time2}
           </Button>
