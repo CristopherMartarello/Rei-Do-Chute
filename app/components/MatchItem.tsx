@@ -13,6 +13,11 @@ const MatchItem = ({ matchData }: MatchItemProps) => {
   const [logoTime1, setLogoTime1] = useState("");
   const [logoTime2, setLogoTime2] = useState("");
   const [selectedTeam, setSelectedTeam] = useState<string | null>(null);
+  const [buttonBackgrounds, setButtonBackgrounds] = useState({
+    time1: 'bg-zinc-600',
+    draw: 'bg-zinc-600',
+    time2: 'bg-zinc-600'
+  });
   const { userTips, handleTipSelection } = useTipSelection();
 
   useEffect(() => {
@@ -22,7 +27,7 @@ const MatchItem = ({ matchData }: MatchItemProps) => {
 
   useEffect(() => {
     console.log(userTips);
-  }, []);
+  }, [userTips]);
 
   const renderLogoTime1 = () => {
     switch (matchData.time1) {
@@ -158,56 +163,68 @@ const MatchItem = ({ matchData }: MatchItemProps) => {
     }
   };
 
+  const handleButtonClick = (team: string, matchData: Match) => {
+    if (selectedTeam === team || selectedTeam === `Empate (${matchData.time1} x ${matchData.time2})`) {
+      setSelectedTeam(null);
+    } else {
+      setSelectedTeam(team);
+    }
+    handleTipSelection(team, matchData);
+  };
+
   return (
-    <div className="flex flex-col justify-center items-center p-3 m-[4px] gap-[7px] bg-neutral-900 rounded-xl">
+    <div className="flex flex-col justify-center items-center p-3 m-[8px] gap-[7px] bg-neutral-900 rounded-xl">
       <div className="flex justify-between">
-        <span className="text-white text-[9px]">
+        <span className="text-white text-[10px]">
           {matchData.data} - {matchData.hora}h - {matchData.estadio}
         </span>
       </div>
-      <div className="flex justify-center items-center gap-[7px]">
+      <div className="flex items-center mb-4">
         {/* Logo time 1 */}
         {logoTime1 && (
           <Image
             src={logoTime1}
             alt={"Logo do Time 1"}
-            width={30}
-            height={25}
+            width={65}
+            height={65}
             className="object-cover"
           />
         )}
-        <ButtonGroup size="sm">
-          <Button
-            className="bg-zinc-600 text-white w-20"
-            onClick={() => handleTipSelection(matchData.time1, matchData)}
-            disabled={!!selectedTeam && selectedTeam !== matchData.time1}>
-            {matchData.time1}
-          </Button>
-          <Divider className="bg-yellow-400" orientation="vertical" />
-          <Button
-            className="bg-zinc-600 text-white w-20"
-            onClick={() => handleTipSelection(`Empate (${matchData.time1} x ${matchData.time2})`, matchData)}
-            disabled={!!selectedTeam && selectedTeam !== "Empate"}>
-            Empate
-          </Button>
-          <Divider className="bg-yellow-400" orientation="vertical" />
-          <Button
-            className="bg-zinc-600 text-white w-20"
-            onClick={() => handleTipSelection(matchData.time2, matchData)}
-            disabled={!!selectedTeam && selectedTeam !== matchData.time2}>
-            {matchData.time2}
-          </Button>
-        </ButtonGroup>
+        <span className="m-4 text-white">vs</span>
         {/* Logo time 2 */}
         {logoTime2 && (
           <Image
             src={logoTime2}
             alt={"Logo do Time 2"}
-            width={30}
-            height={25}
+            width={65}
+            height={65}
             className="object-cover"
           />
         )}
+      </div>
+      <div className="flex justify-center items-center gap-[7px]">
+        <ButtonGroup size="sm">
+          <Button
+            className={`${selectedTeam === matchData.time1 ? 'bg-yellow-600' : 'bg-zinc-600'} text-white w-20`}
+            onClick={() => handleButtonClick(matchData.time1, matchData)}
+            disabled={!!selectedTeam && selectedTeam !== matchData.time1}>
+            {matchData.time1}
+          </Button>
+          <Divider className="bg-yellow-400" orientation="vertical" />
+          <Button
+            className={`${selectedTeam === `Empate (${matchData.time1} x ${matchData.time2})` ? 'bg-yellow-600' : 'bg-zinc-600'} text-white w-20`}
+            onClick={() => handleButtonClick(`Empate (${matchData.time1} x ${matchData.time2})`, matchData)}
+            disabled={!!selectedTeam && selectedTeam !== `Empate (${matchData.time1} x ${matchData.time2})`}>
+            Empate
+          </Button>
+          <Divider className="bg-yellow-400" orientation="vertical" />
+          <Button
+            className={`${selectedTeam === matchData.time2 ? 'bg-yellow-600' : 'bg-zinc-600'} text-white w-20`}
+            onClick={() => handleButtonClick(matchData.time2, matchData)}
+            disabled={!!selectedTeam && selectedTeam !== matchData.time2}>
+            {matchData.time2}
+          </Button>
+        </ButtonGroup>
       </div>
     </div>
   );
