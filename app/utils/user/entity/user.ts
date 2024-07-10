@@ -1,3 +1,5 @@
+import UserTips from "../../user-tips/entity/user-tips";
+
 type UserProps = {
     id: string;
     name: string;
@@ -5,6 +7,7 @@ type UserProps = {
     password: string;
     titles: number;
     profile: string;
+    actualTips: UserTips;
 }
 
 export default class User {
@@ -14,6 +17,7 @@ export default class User {
     private _password: string;
     private _titles: number;
     private _profile: string;
+    private _actualTips: UserTips;
 
     constructor(props: UserProps) {
         this._id = props.id;
@@ -22,6 +26,7 @@ export default class User {
         this._password = props.password;
         this._titles = props.titles;
         this._profile = props.profile;
+        this._actualTips = props.actualTips;
     }
 
     get id(): string {
@@ -46,5 +51,9 @@ export default class User {
 
     get profile(): string {
         return this._profile
+    }
+
+    get actualTips(): UserTips {
+        return this._actualTips
     }
 }

@@ -1,3 +1,5 @@
+import UserTips from "../../user-tips/entity/user-tips";
+
 export interface FindUserUseCaseInputDTO{
     id: string;
 }
@@ -9,6 +11,7 @@ export interface FindUserUseCaseOutputDTO{
     password: string;
     titles: number;
     profile: string;
+    actualTips: UserTips;
 }
 
 export interface GenerateUseCaseInputDTO{
@@ -18,6 +21,7 @@ export interface GenerateUseCaseInputDTO{
     password: string;
     titles: number,
     profile: string;
+    actualTips: UserTips;
 }
 
 export interface GenerateUseCaseOutputDTO{
@@ -26,4 +30,5 @@ export interface GenerateUseCaseOutputDTO{
     email: string;
     password: string;
     profile: string;
+    actualTips: UserTips;
 }

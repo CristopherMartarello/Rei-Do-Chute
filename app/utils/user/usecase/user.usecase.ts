@@ -19,6 +19,7 @@ export default class UserUseCase{
             password: result.password,
             titles: result.titles,
             profile: result.profile,
+            actualTips: result.actualTips
         }
     }
 
@@ -29,7 +30,8 @@ export default class UserUseCase{
             email: input.email,
             password: input.password,
             titles: input.titles,
-            profile: input.profile
+            profile: input.profile,
+            actualTips: input.actualTips
         });
 
         await this._userRepository.generate(user)
@@ -39,7 +41,8 @@ export default class UserUseCase{
             name: user.name,
             email: user.email,
             password: user.password,
-            profile: user.profile
+            profile: user.profile,
+            actualTips: user.actualTips
         }
     }
 }
