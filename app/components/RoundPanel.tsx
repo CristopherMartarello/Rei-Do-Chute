@@ -3,6 +3,9 @@ import Image from "next/image";
 import MatchItem from "./MatchItem";
 import { Match, MatchDoc } from "../firebase/matches";
 import { useEffect, useState } from "react";
+import { addTipsToUser, getUserByAuthId } from "../firebase/user";
+import { useTipSelection } from "../context/TipsContext";
+import { useAuthContext } from "../context/AuthContext";
 
 interface RoundPanelProps {
   matchData: MatchDoc[];
@@ -11,6 +14,8 @@ interface RoundPanelProps {
 const RoundPanel = ({matchData}: RoundPanelProps) => {
   const [matches, setMatches] = useState<Match[]>([]);
   const [loading, setLoading] = useState(true);
+  const { userTips, handleTipSelection } = useTipSelection();
+  const { userAuth } = useAuthContext();
 
   useEffect(() => {
     if (matchData && matchData.length > 0) {
@@ -26,6 +31,18 @@ const RoundPanel = ({matchData}: RoundPanelProps) => {
       }, 1000); 
     }
   }, [matches]);
+
+  const handleTipsSubmit = async () => {
+    try {
+      setLoading(true);
+      if(!userAuth) return;
+      const userDoc = await getUserByAuthId(userAuth.uid);
+      await addTipsToUser(userDoc.id, userTips);
+    } catch(error) {
+      console.log(error);
+    }
+    setLoading(false);
+  };
 
   return (
     <div className="flex flex-col h-full w-full bg-neutral-900">
@@ -61,7 +78,7 @@ const RoundPanel = ({matchData}: RoundPanelProps) => {
         </div>
         <div className="m-3"></div>
       </div>
-      <Button className="m-2 bg-yellow-600" isLoading={loading}>
+      <Button className="m-2 bg-yellow-600" isLoading={loading} onClick={() => handleTipsSubmit()}>
         <span className="font-semibold">Enviar Palpites</span>
       </Button>
     </div>

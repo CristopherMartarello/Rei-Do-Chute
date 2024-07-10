@@ -12,15 +12,17 @@ async function createAccountInstance(name: string, userId: string) {
         name,
         userIds: [userId]
     })
-    console.log(account);
 }
 
-async function createUserInstance(name: string, email: string) {
+async function createUserInstance(name: string, email: string, authUid: string) {
     const user = await addDoc(userCollectionRef, {
         name,
-        email
+        email,
+        authUid,
+        actualTips: [],
+        historyOfTips: [],
+        titles: 0
     })
-    console.log(user.id);
     await createAccountInstance(name+"'s Team", user.id);
 }
 
@@ -30,10 +32,10 @@ export default async function signUp(name: string, email: string, password: stri
 
     try {
         result = await createUserWithEmailAndPassword(auth, email, password);
-        await createUserInstance(name, email);
+        await createUserInstance(name, email, result.user.uid);
     } catch (e) {
         error = e;
     }
 
-    return { result, error}
+    return { result, error };
 }
