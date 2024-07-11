@@ -1,4 +1,4 @@
-import { Button, Divider } from "@nextui-org/react";
+import { Button, Divider, Modal, ModalBody, ModalContent, ModalFooter, ModalHeader, useDisclosure } from "@nextui-org/react";
 import Image from "next/image";
 import MatchItem from "./MatchItem";
 import { Match, MatchDoc } from "../firebase/matches";
@@ -6,6 +6,7 @@ import { useEffect, useState } from "react";
 import { addTipsToUser, getUserByAuthId } from "../firebase/user";
 import { useTipSelection } from "../context/TipsContext";
 import { useAuthContext } from "../context/AuthContext";
+import { useRouter } from "next/navigation";
 
 interface RoundPanelProps {
   matchData: MatchDoc[];
@@ -16,6 +17,8 @@ const RoundPanel = ({matchData}: RoundPanelProps) => {
   const [loading, setLoading] = useState(true);
   const { userTips, handleTipSelection } = useTipSelection();
   const { userAuth } = useAuthContext();
+  const {isOpen, onOpen, onClose} = useDisclosure();
+  const router = useRouter();
 
   useEffect(() => {
     if (matchData && matchData.length > 0) {
@@ -32,12 +35,20 @@ const RoundPanel = ({matchData}: RoundPanelProps) => {
     }
   }, [matches]);
 
+  const handleModalSubmitAlert = () => {
+    setLoading(true);
+    onOpen();
+    setLoading(false);
+  }
+
   const handleTipsSubmit = async () => {
     try {
       setLoading(true);
       if(!userAuth) return;
       const userDoc = await getUserByAuthId(userAuth.uid);
       await addTipsToUser(userDoc.id, userTips);
+      onClose();
+      router.push("/payment");
     } catch(error) {
       console.log(error);
     }
@@ -78,9 +89,37 @@ const RoundPanel = ({matchData}: RoundPanelProps) => {
         </div>
         <div className="m-3"></div>
       </div>
-      <Button className="m-2 bg-yellow-600" isLoading={loading} onClick={() => handleTipsSubmit()}>
+      <Button className="m-2 bg-yellow-600" isLoading={loading} onClick={() => handleModalSubmitAlert()}>
         <span className="font-semibold">Enviar Palpites</span>
       </Button>
+      <Modal 
+        size={"sm"} 
+        isOpen={isOpen} 
+        onClose={onClose} 
+        placement="center"
+      >
+        <ModalContent>
+          {(onClose) => (
+            <>
+              <ModalHeader className="flex flex-col gap-1">Confirmar seus palpites?</ModalHeader>
+              <ModalBody>
+                <p> 
+                  Tem certeza que deseja confirmar os seus palpites para esse rodada?
+                  Não será possível editar ou alterar até o final da rodada.
+                </p>
+              </ModalBody>
+              <ModalFooter>
+                <Button color="danger" variant="light" onPress={onClose}>
+                  Voltar
+                </Button>
+                <Button color="primary" onClick={() => handleTipsSubmit()} isLoading={loading}>
+                  Confirmar
+                </Button>
+              </ModalFooter>
+            </>
+          )}
+        </ModalContent>
+      </Modal>
     </div>
   );
 };
