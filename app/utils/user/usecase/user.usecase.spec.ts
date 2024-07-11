@@ -19,7 +19,8 @@ const user = new User({
     password: "123",
     titles: 3,
     profile: "user",
-    actualTips: userTips
+    actualTips: userTips,
+    historyOfTips: []
 })
 
 const MockRepository = () => {
