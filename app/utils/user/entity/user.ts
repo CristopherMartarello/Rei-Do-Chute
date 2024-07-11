@@ -63,4 +63,8 @@ export default class User {
     get historyOfTips(): UserTips[] {
         return this._historyOfTips
     }
+
+    addTipsHistory(tip: UserTips): void{
+        this._historyOfTips.push(tip)
+    }
 }
