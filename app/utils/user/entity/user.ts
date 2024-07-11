@@ -66,5 +66,6 @@ export default class User {
 
     addTipsHistory(tip: UserTips): void{
         this._historyOfTips.push(tip)
+        console.log(`${this.historyOfTips.join(", ")}`)
     }
 }

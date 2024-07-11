@@ -3,7 +3,7 @@ import Image from "next/image";
 import MatchItem from "./MatchItem";
 import { Match, MatchDoc } from "../firebase/matches";
 import { useEffect, useState } from "react";
-import { addTipsToUser, getUserByAuthId } from "../firebase/user";
+import { addTipsHistory, addTipsToUser, getUserByAuthId } from "../firebase/user";
 import { useTipSelection } from "../context/TipsContext";
 import { useAuthContext } from "../context/AuthContext";
 import { useRouter } from "next/navigation";

@@ -1,3 +1,4 @@
+import { useState } from "react";
 import UserTips from "../utils/user-tips/entity/user-tips";
 import dbConfig from "./firebase-config";
 import { arrayUnion, collection, doc, getDocs, getFirestore, query, updateDoc, where } from "firebase/firestore";
@@ -18,6 +19,22 @@ export async function addTipsToUser(
     console.error("Erro ao adicionar palpites ao usuário:", error);
   }
 };
+
+export async function addTipsHistory(
+  userId: string,
+  tips: UserTips
+) {
+  const userDocRef = doc(db, "users", userId);
+  try {
+    console.log(tips.tips)
+    await updateDoc(userDocRef, {
+      historyOfTips: arrayUnion(tips.tips),
+    });
+    console.log("Palpites adicionados ao usuário...");
+  } catch (error) {
+    console.error("Erro ao adicionar palpites ao usuário:", error);
+  }
+}
 
 export const getUserByAuthId = async (authUid: string) => {
   const usersCollectionRef = collection(db, "users");
