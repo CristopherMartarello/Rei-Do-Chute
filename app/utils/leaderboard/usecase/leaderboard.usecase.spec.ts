@@ -30,16 +30,16 @@ const userTips3 = new UserTips({
 })
 
 const user1 = new User({
-    id: "123", name: "Name 1", email: "x@x.com",
-    password: "123", titles: 3, profile: "user1", actualTips: userTips1,
+    id: "123", name: "Name 1", email: "x@x.com", password: "123",
+    titles: 3, profile: "user1", actualTips: userTips1, historyOfTips: []
 })
 const user2 = new User({
-    id: "234", name: "Name 3", email: "x@x.com",
-    password: "234", titles: 4, profile: "user2", actualTips: userTips2,
+    id: "234", name: "Name 3", email: "x@x.com", password: "234", 
+    titles: 4, profile: "user2", actualTips: userTips2, historyOfTips: []
 })
 const user3 = new User({
-    id: "345", name: "Name 3", email: "x@x.com",
-    password: "345", titles: 1, profile: "user3", actualTips: userTips3,
+    id: "345", name: "Name 3", email: "x@x.com", password: "345", 
+    titles: 1, profile: "user3", actualTips: userTips3, historyOfTips: []
 })
 
 const leaderBoard = new LeaderBoard({

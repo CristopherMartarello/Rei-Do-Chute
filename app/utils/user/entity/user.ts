@@ -8,6 +8,7 @@ type UserProps = {
     titles: number;
     profile: string;
     actualTips: UserTips;
+    historyOfTips: UserTips[];
 }
 
 export default class User {
@@ -18,6 +19,7 @@ export default class User {
     private _titles: number;
     private _profile: string;
     private _actualTips: UserTips;
+    private _historyOfTips: UserTips[];
 
     constructor(props: UserProps) {
         this._id = props.id;
@@ -27,6 +29,7 @@ export default class User {
         this._titles = props.titles;
         this._profile = props.profile;
         this._actualTips = props.actualTips;
+        this._historyOfTips = props.historyOfTips;
     }
 
     get id(): string {
@@ -55,5 +58,13 @@ export default class User {
 
     get actualTips(): UserTips {
         return this._actualTips
+    }
+
+    get historyOfTips(): UserTips[] {
+        return this._historyOfTips
+    }
+
+    addTipsHistory(tip: UserTips): void{
+        this._historyOfTips.push(tip)
     }
 }

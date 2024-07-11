@@ -31,7 +31,8 @@ export default class UserUseCase{
             password: input.password,
             titles: input.titles,
             profile: input.profile,
-            actualTips: input.actualTips
+            actualTips: input.actualTips,
+            historyOfTips: []
         });
 
         await this._userRepository.generate(user)
