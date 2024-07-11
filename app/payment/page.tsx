@@ -25,7 +25,6 @@ const Payment = () => {
       .then(() => {
         setIsCopied(true);
         setTimeout(() => {
-          console.log("setou false");
           setIsCopied(false);
         }, 5000);
       })
