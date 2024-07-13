@@ -3,7 +3,7 @@ import { Button, ButtonGroup, Divider } from "@nextui-org/react";
 import Image from "next/image";
 import { Match } from "../firebase/matches";
 import { useEffect, useState } from "react";
-import { useTipSelection } from "../context/TipsContext";
+import { useTipSelection } from "../../app/context/TipsContext";
 
 interface MatchItemProps {
   matchData: Match;

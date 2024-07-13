@@ -1,7 +1,7 @@
 import { useState } from "react";
 import UserTips from "../utils/user-tips/entity/user-tips";
 import dbConfig from "./firebase-config";
-import { arrayUnion, collection, doc, getDocs, getFirestore, query, updateDoc, where } from "firebase/firestore";
+import { arrayUnion, collection, doc, getDoc, getDocs, getFirestore, query, updateDoc, where } from "firebase/firestore";
 
 const db = getFirestore(dbConfig);
 
@@ -33,6 +33,20 @@ export async function addTipsHistory(
     console.log("Palpites adicionados ao usuário...");
   } catch (error) {
     console.error("Erro ao adicionar palpites ao usuário:", error);
+  }
+}
+
+export async function getActualTipsFromUser(userId: string) {
+  const userDocRef = doc(db, "users", userId);
+  try {
+    const userDocSnapshot = await getDoc(userDocRef);
+    if (userDocSnapshot.exists()) {
+      const userData = userDocSnapshot.data();
+      const actualTips = userData.actualTips;
+      return actualTips;
+    }
+  } catch (error) {
+    console.error("Erro ao encontrar palpites do usuário...");
   }
 }
 
