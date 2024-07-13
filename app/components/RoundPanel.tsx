@@ -74,19 +74,8 @@ const RoundPanel = ({ matchData }: RoundPanelProps) => {
   return (
     <div className="flex flex-col h-full w-full bg-neutral-900">
       <ToastContainer />
-      {/*MAIN TITLE*/}
-      <div className="flex justify-center m-8">
-        {/* <h1 className="font-semibold text-xl text-white">PALPITES DA RODADA</h1> */}
-        <Image
-              src={"/FontePalpitesDaRodada.png"}
-              alt={"Logo do Brasileirão"}
-              width={200}
-              height={200}
-              className="object-cover"
-            />
-      </div>
       {/*PANEL*/}
-      <div className="mx-2 rounded-xl bg-zinc-700">
+      <div className="m-2 rounded-xl bg-zinc-700">
         <div className="flex">
           <div className="flex items-center mt-2 px-4 w-full">
             <Image
