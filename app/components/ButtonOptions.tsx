@@ -12,7 +12,7 @@ const ButtonOptions = ({ onOptionClick }: ButtonOptionsProps) => {
         <CardBody>
           <div className="flex justify-between gap-1 items-center">
             <Image
-              src={"/partidas_aovivo.png"}
+              src={"/aovivo.png"}
               alt={"Logo do Brasileirão"}
               width={155}
               height={155}
