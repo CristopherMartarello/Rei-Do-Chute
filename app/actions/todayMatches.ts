@@ -3,7 +3,7 @@
 const token = process.env.NEXT_PUBLIC_API_TOKEN;
 
 export default async function getTodayMatches() {
-  const response = await fetch(`https://api.football-data.org/v4/matches`, {
+  const response = await fetch(`https://api.football-data.org/v4/competitions/BSA/matches?matchday=17`, {
     method: "GET",
     headers: {
       "Content-Type": "application/json",
