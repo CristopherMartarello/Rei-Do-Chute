@@ -37,7 +37,7 @@ export interface TodayMatch {
   competition: TodayCompetition;
   homeTeam: TodayTeam;
   lastUpdated: string;
-  matchDay: number;
+  matchday: number;
   score: TodayScore;
   utcDate: string;
 }
