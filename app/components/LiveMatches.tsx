@@ -104,7 +104,7 @@ const LiveMatches = ({ todayMatches }: LiveMatchesProps) => {
                       Rodada {match.matchday} - Série A
                     </span>
                     {match.status === "TIMED" ? (
-                      <span className="font-semibold text-xs bg-zinc-500 px-2 py-1 rounded-md space-x-2 text-white">
+                      <span className="font-semibold text-xs bg-zinc-700 px-2 py-1 rounded-md space-x-2 text-white">
                         <span>
                           {capitalizeFirstLetter(formatDate(match.utcDate))}
                         </span>
@@ -116,11 +116,11 @@ const LiveMatches = ({ todayMatches }: LiveMatchesProps) => {
                         </span>
                       </span>
                     ) : match.status === "FINISHED" ? (
-                      <span className="font-semibold text-xs bg-zinc-500 px-2 py-1 rounded-md text-white">Encerrado</span>
+                      <span className="font-semibold text-xs bg-zinc-700 px-2 py-1 rounded-md text-white">Encerrado</span>
                     ) : match.status === "PAUSED" ? (
-                      <span className="font-semibold text-xs bg-zinc-500 px-2 py-1 rounded-md text-white">Intervalo</span>
+                      <span className="font-semibold text-xs bg-zinc-700 px-2 py-1 rounded-md text-white">Intervalo</span>
                     ) : match.status === "IN_PLAY" ? (
-                      <span className="live-bar">Ao vivo</span>
+                      <span className="font-semibold text-xs live-bar px-2 py-1 rounded-md text-white">Ao vivo</span>
                     ) : null}
                   </div>
                   <div className="px-1">

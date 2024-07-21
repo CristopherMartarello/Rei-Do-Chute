@@ -121,12 +121,12 @@ const ActualTips = ({ todayMatches }: LiveMatchesProps) => {
   const renderTags = (match: TodayMatch) => {
     switch (match.status) {
       case 'FINISHED':
-        return <span className="font-semibold text-xs bg-zinc-500 px-2 py-1 rounded-md text-white">Encerrado</span>;
+        return <span className="font-semibold text-xs bg-zinc-700 px-2 py-1 rounded-md text-white">Encerrado</span>;
       case 'PAUSED':
-        return <span className="font-semibold text-xs bg-zinc-500 px-2 py-1 rounded-md text-white">Intervalo</span>
+        return <span className="font-semibold text-xs bg-zinc-700 px-2 py-1 rounded-md text-white">Intervalo</span>
       case 'TIMED':
         return (
-          <span className="font-semibold text-xs bg-zinc-500 px-2 py-1 rounded-md text-white space-x-2">
+          <span className="font-semibold text-xs bg-zinc-700 px-2 py-1 rounded-md text-white space-x-2">
             <span>{capitalizeFirstLetter(formatDate(match.utcDate))}</span>
             <span>
               {new Date(match.utcDate).toLocaleTimeString([], {
@@ -137,7 +137,7 @@ const ActualTips = ({ todayMatches }: LiveMatchesProps) => {
           </span>
         );
       case 'IN_PLAY':
-        return <span className="live-bar font-semibold text-xs bg-zinc-200 px-2 py-1 rounded-md text-black">Ao vivo</span>
+        return <span className="font-semibold text-xs live-bar px-2 py-1 rounded-md text-white">Ao vivo</span>
     }
   }
 
@@ -217,7 +217,7 @@ const ActualTips = ({ todayMatches }: LiveMatchesProps) => {
                     <span className="text-yellow-400 text-xs">
                       Rodada {match.matchday} - Série A
                     </span>
-                    <span className="flex text-gray-400 text-xs space-x-1">
+                    <span className="flex items-center text-gray-400 text-xs space-x-1">
                       {renderTags(match)}{renderResult(match)}
                     </span>
                   </div>
