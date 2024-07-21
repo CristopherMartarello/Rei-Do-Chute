@@ -10,7 +10,6 @@ interface LiveMatchesProps {
 
 const LiveMatches = ({ todayMatches }: LiveMatchesProps) => {
   const getScore = (score: number | null) => (score === null ? 0 : score);
-  console.log(todayMatches);
 
   const formatDate = (dateString: string) => {
     const date = new Date(dateString);
@@ -100,21 +99,29 @@ const LiveMatches = ({ todayMatches }: LiveMatchesProps) => {
                   key={match.id}
                   className="flex flex-col p-3 mt-2 gap-[10px] bg-neutral-800 rounded-xl w-full max-w-md"
                 >
-                  <div className="flex justify-between text-gray-400 text-xs px-2">
+                  <div className="flex justify-between items-center text-gray-400 text-xs px-2">
                     <span className="text-yellow-400 text-xs">
                       Rodada {match.matchday} - Série A
                     </span>
-                    <span className="text-gray-400 text-xs space-x-2">
-                      <span>
-                        {capitalizeFirstLetter(formatDate(match.utcDate))}
+                    {match.status === "TIMED" ? (
+                      <span className="font-semibold text-xs bg-zinc-500 px-2 py-1 rounded-md space-x-2 text-white">
+                        <span>
+                          {capitalizeFirstLetter(formatDate(match.utcDate))}
+                        </span>
+                        <span>
+                          {new Date(match.utcDate).toLocaleTimeString([], {
+                            hour: "2-digit",
+                            minute: "2-digit",
+                          })}
+                        </span>
                       </span>
-                      <span>
-                        {new Date(match.utcDate).toLocaleTimeString([], {
-                          hour: "2-digit",
-                          minute: "2-digit",
-                        })}
-                      </span>
-                    </span>
+                    ) : match.status === "FINISHED" ? (
+                      <span className="font-semibold text-xs bg-zinc-500 px-2 py-1 rounded-md text-white">Encerrado</span>
+                    ) : match.status === "PAUSED" ? (
+                      <span className="font-semibold text-xs bg-zinc-500 px-2 py-1 rounded-md text-white">Intervalo</span>
+                    ) : match.status === "IN_PLAY" ? (
+                      <span className="live-bar">Ao vivo</span>
+                    ) : null}
                   </div>
                   <div className="px-1">
                     <Divider className="bg-zinc-700" />

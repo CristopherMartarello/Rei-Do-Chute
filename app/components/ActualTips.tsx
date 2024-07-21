@@ -1,25 +1,37 @@
-'use client'
+"use client";
 
 import { useEffect, useState } from "react";
 import { Card, CardBody, Divider } from "@nextui-org/react";
 import Image from "next/image";
 import { useAuthContext } from "../context/AuthContext";
 import { getActualTipsFromUser, getUserByAuthId } from "../firebase/user";
+import { TodayMatch } from "./Home";
+import { format } from "date-fns";
+import { ptBR } from "date-fns/locale";
+import { RiCloseCircleFill } from "react-icons/ri";
+import { RiCheckboxCircleFill } from "react-icons/ri";
+
 
 interface UserTip {
   matchId: string;
   selectedTeam: string;
 }
 
-const ActualTips = () => {
+interface LiveMatchesProps {
+  todayMatches: TodayMatch[];
+}
+
+const ActualTips = ({ todayMatches }: LiveMatchesProps) => {
   const [actualTips, setActualTips] = useState<UserTip[]>([]);
   const [loading, setLoading] = useState(true);
   const { userAuth } = useAuthContext();
+  console.log(todayMatches);
 
   useEffect(() => {
     const fetchUserTips = async () => {
       if (userAuth) {
         try {
+          setLoading(true);
           const user = await getUserByAuthId(userAuth.uid);
           const tips = await getActualTipsFromUser(user.id);
           setActualTips(tips || []);
@@ -38,6 +50,135 @@ const ActualTips = () => {
     return <div className="text-white">Carregando...</div>;
   }
 
+  const renderLogoTime = (team: string) => {
+    switch (team) {
+      case "CA Paranaense":
+        return "/times/athletico.png";
+      case "AC Goianiense":
+        return "/times/atleticogo.png";
+      case "CA Mineiro":
+        return "/times/atleticomg.png";
+      case "EC Bahia":
+        return "/times/bahia.png";
+      case "Botafogo FR":
+        return "/times/botafogo.png";
+      case "RB Bragantino":
+        return "/times/bragantino.png";
+      case "SC Corinthians Paulista":
+        return "/times/corinthians.png";
+      case "Criciúma EC":
+        return "/times/criciuma.png";
+      case "Cruzeiro EC":
+        return "/times/cruzeiro.png";
+      case "Cuiabá EC":
+        return "/times/cuiaba.png";
+      case "CR Flamengo":
+        return "/times/flamengo.png";
+      case "Fluminense FC":
+        return "/times/fluminense.png";
+      case "Fortaleza EC":
+        return "/times/fortaleza.png";
+      case "Grêmio FBPA":
+        return "/times/gremio.png";
+      case "SC Internacional":
+        return "/times/internacional.png";
+      case "EC Juventude":
+        return "/times/juventude.png";
+      case "SE Palmeiras":
+        return "/times/palmeiras.png";
+      case "São Paulo FC":
+        return "/times/saopaulo.png";
+      case "CR Vasco da Gama":
+        return "/times/vasco.png";
+      case "EC Vitória":
+        return "/times/vitoria.png";
+      default:
+        return "/times/default.png";
+    }
+  };
+
+  const renderConfrontTip = (homeTeam: string, awayTeam: string) => {
+    const matchingTip = actualTips.find((tip) => {
+      const matchHome = tip.selectedTeam === homeTeam;
+      const matchAway = tip.selectedTeam === awayTeam;
+      return matchHome || matchAway;
+    });
+
+    if (matchingTip) {
+      return (
+        <Image
+          src={renderLogoTime(matchingTip.selectedTeam)}
+          alt={"Logo do time escolhido"}
+          width={60}
+          height={60}
+        />
+      );
+    } else {
+      return <span className="flex bg-yellow-400 w-14 h-14 text-center justify-center items-center text-3xl text-black">E</span>
+    }
+  };
+
+  const renderTags = (match: TodayMatch) => {
+    switch (match.status) {
+      case 'FINISHED':
+        return <span className="font-semibold text-xs bg-zinc-500 px-2 py-1 rounded-md text-white">Encerrado</span>;
+      case 'PAUSED':
+        return <span className="font-semibold text-xs bg-zinc-500 px-2 py-1 rounded-md text-white">Intervalo</span>
+      case 'TIMED':
+        return (
+          <span className="font-semibold text-xs bg-zinc-500 px-2 py-1 rounded-md text-white space-x-2">
+            <span>{capitalizeFirstLetter(formatDate(match.utcDate))}</span>
+            <span>
+              {new Date(match.utcDate).toLocaleTimeString([], {
+                hour: "2-digit",
+                minute: "2-digit",
+              })}
+            </span>
+          </span>
+        );
+      case 'IN_PLAY':
+        return <span className="live-bar font-semibold text-xs bg-zinc-200 px-2 py-1 rounded-md text-black">Ao vivo</span>
+    }
+  }
+
+  const renderResult = (matchWinner: TodayMatch) => {
+    const iconSize = "h-4 w-4";
+    const spanClasses = "flex w-14 px-2 py-1 rounded-md text-white font-semibold text-xs items-center justify-center";
+  
+    if (matchWinner.score.winner === 'HOME_TEAM') {
+      const result = actualTips.find((tip) => tip.selectedTeam === matchWinner.homeTeam.name);
+      return result ? (
+        <span className={`${spanClasses} bg-green-500`}>
+          <RiCheckboxCircleFill className={`mx-1 ${iconSize}`} />
+        </span>
+      ) : (
+        <span className={`${spanClasses} bg-red-500`}>
+          <RiCloseCircleFill className={`mx-1 ${iconSize}`} />
+        </span>
+      );
+    } else if (matchWinner.score.winner === 'AWAY_TEAM') {
+      const result = actualTips.find((tip) => tip.selectedTeam === matchWinner.awayTeam.name);
+      return result ? (
+        <span className={`${spanClasses} bg-green-500`}>
+          <RiCheckboxCircleFill className={`mx-1 ${iconSize}`} />
+        </span>
+      ) : (
+        <span className={`${spanClasses} bg-red-500`}>
+          <RiCloseCircleFill className={`mx-1 ${iconSize}`} />
+        </span>
+      );
+    }
+  };
+
+  const capitalizeFirstLetter = (string: string) => {
+    return string.charAt(0).toUpperCase() + string.slice(1);
+  };
+
+  const formatDate = (dateString: string) => {
+    const date = new Date(dateString);
+    return format(date, `EEEEEE, dd/MM`, { locale: ptBR });
+  };
+
   return (
     <div className="flex flex-col min-h-screen w-full bg-neutral-900">
       <Card className="m-2 bg-zinc-700">
@@ -53,38 +194,76 @@ const ActualTips = () => {
               />
               <div className="my-5 mx-2">
                 <span className="font-semibold text-lg text-yellow-400">
-                  Brasileirão 2024
+                  Meus Palpites da Rodada
                 </span>
               </div>
             </div>
           </div>
-          <div className="px-1">
+          <div className="m-1">
             <Divider className="bg-yellow-400" />
           </div>
-          <div className="mt-4">
-            {actualTips.length > 0 ? (
-              <div className="text-white">
-                {/* Tem que alterar o design mas é contigo, só deixei assim, por que as informações já tao de bandeja */}
-                <h2>Suas Apostas:</h2>
-                <ul>
-                  {actualTips.map((tip, index) => (
-                    <li key={index}>
-                      Match ID: {tip.matchId}, Selected Team: {tip.selectedTeam}
-                    </li>
-                  ))}
-                </ul>
-              </div>
-            ) : (
-              <div className="flex flex-col items-center justify-center text-white h-64">
-                <Image
-                  src={"/AvisoApostaNaoEncontrada.png"}
-                  alt={"Aviso Aposta Nao Encontrada"}
-                  width={50}
-                  height={50}
-                  className="object-cover"
-                />
-              </div>
-            )}
+          <div className="flex flex-col space-y-1 items-center justify-center">
+            {todayMatches
+              .filter(
+                (match) =>
+                  match.competition.name === "Campeonato Brasileiro Série A"
+              )
+              .map((match) => (
+                <div
+                  key={match.id}
+                  className="flex flex-col p-3 mt-3 gap-[10px] bg-neutral-800 rounded-xl w-full max-w-md"
+                >
+                  <div className="flex justify-between items-center text-gray-400 text-xs px-2">
+                    <span className="text-yellow-400 text-xs">
+                      Rodada {match.matchday} - Série A
+                    </span>
+                    <span className="flex text-gray-400 text-xs space-x-1">
+                      {renderTags(match)}{renderResult(match)}
+                    </span>
+                  </div>
+                  <div className="px-1">
+                    <Divider className="bg-zinc-700" />
+                  </div>
+                  <div className="flex flex-col px-2">
+                    <div className="flex flex-col justify-between text-white mb-2 gap-2">
+                      <div className="flex font-semibold mt-2 gap-2 text-sm truncate justify-between">
+                        <div className="flex flex-col gap-2 text-sm truncate justify-between">
+                          <div className="flex justify-between items-center">
+                            <div className="flex items-center gap-3">
+                              <Image
+                                src={renderLogoTime(match.homeTeam.name)}
+                                alt={"Home team Logo"}
+                                width={25}
+                                height={25}
+                              />
+                              <span className="font-semibold text-sm truncate">
+                                {match.homeTeam.name}
+                              </span>
+                            </div>
+                          </div>
+                          <div className="flex justify-between items-center">
+                            <div className="flex items-center gap-3">
+                              <Image
+                                src={renderLogoTime(match.awayTeam.name)}
+                                alt={"Away team Logo"}
+                                width={25}
+                                height={25}
+                              />
+                              <span className="font-semibold text-sm truncate">
+                                {match.awayTeam.name}
+                              </span>
+                            </div>
+                          </div>
+                        </div>
+                        {renderConfrontTip(
+                          match.homeTeam.name,
+                          match.awayTeam.name
+                        )}
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              ))}
           </div>
         </CardBody>
       </Card>

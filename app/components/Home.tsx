@@ -40,6 +40,7 @@ export interface TodayMatch {
   matchday: number;
   score: TodayScore;
   utcDate: string;
+  status: string;
 }
 
 interface HomeProps {
@@ -115,7 +116,7 @@ const Home = ({ matchData }: HomeProps) => {
       {view === "aoVivo" && <LiveMatches todayMatches={todayMatches} />}
       {view === "palpites" &&
         (actualTips && actualTips.length > 0 ? (
-          <ActualTips />
+          <ActualTips todayMatches={todayMatches}/>
         ) : (
           <>
             {/*adicionar o isAfter aqui depois, só tirei pra desenvolver*/}
