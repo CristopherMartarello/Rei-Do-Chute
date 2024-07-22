@@ -121,6 +121,8 @@ const LiveMatches = ({ todayMatches }: LiveMatchesProps) => {
                       <span className="break-bar font-semibold text-xs bg-zinc-700 px-2 py-1 rounded-md text-white">Intervalo</span>
                     ) : match.status === "IN_PLAY" ? (
                       <span className="font-semibold text-xs live-bar px-2 py-1 rounded-md text-white">Ao vivo</span>
+                    ) : match.status === "POSTPONED" ? (
+                      <span className="font-semibold text-xs bg-red-950 px-2 py-1 rounded-md text-white">Adiado TBD</span>
                     ) : null}
                   </div>
                   <div className="px-1">

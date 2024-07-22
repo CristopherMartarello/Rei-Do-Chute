@@ -138,6 +138,8 @@ const ActualTips = ({ todayMatches }: LiveMatchesProps) => {
         );
       case 'IN_PLAY':
         return <span className="font-semibold text-xs live-bar px-2 py-1 rounded-md text-white">Ao vivo</span>
+      case 'POSTPONED':
+        return <span className="font-semibold text-xs bg-red-950 px-2 py-1 rounded-md text-white">Adiado TBD</span>
     }
   }
 
