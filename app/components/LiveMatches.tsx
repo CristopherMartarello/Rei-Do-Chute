@@ -118,7 +118,7 @@ const LiveMatches = ({ todayMatches }: LiveMatchesProps) => {
                     ) : match.status === "FINISHED" ? (
                       <span className="font-semibold text-xs bg-zinc-700 px-2 py-1 rounded-md text-white">Encerrado</span>
                     ) : match.status === "PAUSED" ? (
-                      <span className="font-semibold text-xs bg-zinc-700 px-2 py-1 rounded-md text-white">Intervalo</span>
+                      <span className="break-bar font-semibold text-xs bg-zinc-700 px-2 py-1 rounded-md text-white">Intervalo</span>
                     ) : match.status === "IN_PLAY" ? (
                       <span className="font-semibold text-xs live-bar px-2 py-1 rounded-md text-white">Ao vivo</span>
                     ) : null}

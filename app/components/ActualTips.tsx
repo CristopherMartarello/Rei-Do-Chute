@@ -123,7 +123,7 @@ const ActualTips = ({ todayMatches }: LiveMatchesProps) => {
       case 'FINISHED':
         return <span className="font-semibold text-xs bg-zinc-700 px-2 py-1 rounded-md text-white">Encerrado</span>;
       case 'PAUSED':
-        return <span className="font-semibold text-xs bg-zinc-700 px-2 py-1 rounded-md text-white">Intervalo</span>
+        return <span className="break-bar font-semibold text-xs bg-zinc-700 px-2 py-1 rounded-md text-white">Intervalo</span>
       case 'TIMED':
         return (
           <span className="font-semibold text-xs bg-zinc-700 px-2 py-1 rounded-md text-white space-x-2">
@@ -142,6 +142,10 @@ const ActualTips = ({ todayMatches }: LiveMatchesProps) => {
   }
 
   const renderResult = (matchWinner: TodayMatch) => {
+    if (matchWinner.status !== 'FINISHED') {
+      return;
+    }
+
     const iconSize = "h-4 w-4";
     const spanClasses = "flex w-14 px-2 py-1 rounded-md text-white font-semibold text-xs items-center justify-center";
   
@@ -158,6 +162,17 @@ const ActualTips = ({ todayMatches }: LiveMatchesProps) => {
       );
     } else if (matchWinner.score.winner === 'AWAY_TEAM') {
       const result = actualTips.find((tip) => tip.selectedTeam === matchWinner.awayTeam.name);
+      return result ? (
+        <span className={`${spanClasses} bg-green-500`}>
+          <RiCheckboxCircleFill className={`mx-1 ${iconSize}`} />
+        </span>
+      ) : (
+        <span className={`${spanClasses} bg-red-500`}>
+          <RiCloseCircleFill className={`mx-1 ${iconSize}`} />
+        </span>
+      );
+    } else if (matchWinner.score.winner === 'DRAW') {
+      const result = actualTips.find((tip) => tip.selectedTeam === `Empate (${matchWinner.homeTeam.name} x ${matchWinner.awayTeam.name})`);
       return result ? (
         <span className={`${spanClasses} bg-green-500`}>
           <RiCheckboxCircleFill className={`mx-1 ${iconSize}`} />
