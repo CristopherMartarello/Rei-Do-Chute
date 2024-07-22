@@ -16,6 +16,7 @@ export interface TodayScore {
   halfTime: { away: any; home: any };
   winner: any;
 }
+
 export interface TodayCompetition {
   code: string;
   emblem: string;
@@ -23,6 +24,7 @@ export interface TodayCompetition {
   name: string;
   type: string;
 }
+
 export interface TodayTeam {
   crest: string;
   id: number;
@@ -30,6 +32,7 @@ export interface TodayTeam {
   shortName: string;
   tla: string;
 }
+
 export interface TodayMatch {
   id: number;
   area: { code: string; flag: string; id: number; name: string };
@@ -48,7 +51,7 @@ interface HomeProps {
 }
 
 const Home = ({ matchData }: HomeProps) => {
-  const [isAfterMatch, setIsAfterMatch] = useState(true);
+  const [isAfterMatch, setIsAfterMatch] = useState(false); // Inicialize como false
   const [todayMatches, setTodayMatches] = useState<TodayMatch[]>([]);
   const [view, setView] = useState<string>("aoVivo");
 
@@ -67,42 +70,21 @@ const Home = ({ matchData }: HomeProps) => {
   };
 
   useEffect(() => {
-    if (matchData.length > 0 && matchData[0].partidas.length > 0) {
-      const now = new Date();
-      const data = matchData[0].partidas[0].data;
-      const hora = matchData[0].partidas[0].hora;
-      const matchDate = formatDateTime(data, hora);
-      const isAfterMatch = now > matchDate;
-
-      if (isAfterMatch) {
-        setIsAfterMatch(true);
-      }
-    }
-  }, [matchData]);
-
-  const formatDateTime = (data: string, hora: string): Date => {
-    const [dia, mes] = data.split("/");
-    const [horaStr, minutoStr] = hora.split(":");
-
-    const ano = new Date().getFullYear();
-    const formattedDate = new Date(
-      ano,
-      parseInt(mes) - 1,
-      parseInt(dia),
-      parseInt(horaStr),
-      parseInt(minutoStr)
-    );
-
-    return formattedDate;
-  };
-
-  useEffect(() => {
-    const fetchData = async () => {
+    const fetchMatchesAndCheckTime = async () => {
       const data = await getTodayMatches();
       setTodayMatches(data.matches);
+
+      if (data.matches.length > 0) {
+        const now = new Date();
+        const firstMatchTime = new Date(data.matches[0].utcDate);
+        const isAfterMatch = now > firstMatchTime;
+        setIsAfterMatch(isAfterMatch);
+        //pra testar habilita o set abaixo
+        //setIsAfterMatch(true);
+      }
     };
 
-    fetchData();
+    fetchMatchesAndCheckTime();
   }, []);
 
   const handleViewChange = (newView: string) => {
@@ -112,17 +94,21 @@ const Home = ({ matchData }: HomeProps) => {
   return (
     <div>
       <Header />
-      <ButtonOptions onOptionClick={handleViewChange} />
-      {view === "aoVivo" && <LiveMatches todayMatches={todayMatches} />}
-      {view === "palpites" &&
-        (actualTips && actualTips.length > 0 ? (
-          <ActualTips todayMatches={todayMatches}/>
-        ) : (
-          <>
-            {/*adicionar o isAfter aqui depois, só tirei pra desenvolver*/}
-            <RoundPanel matchData={matchData} />
-          </>
-        ))}
+      {}
+      {isAfterMatch ? (
+        <>
+          <ButtonOptions onOptionClick={handleViewChange} />
+          {view === "aoVivo" && <LiveMatches todayMatches={todayMatches} />}
+          {view === "palpites" &&
+            (actualTips && actualTips.length > 0 ? (
+              <ActualTips todayMatches={todayMatches} />
+            ) : (
+              <RoundPanel matchData={matchData} />
+            ))}
+        </>
+      ) : (
+        <RoundPanel matchData={matchData} />
+      )}
     </div>
   );
 };
