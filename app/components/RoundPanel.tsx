@@ -10,12 +10,14 @@ import { useRouter } from "next/navigation";
 import dayjs from "dayjs";
 import { toast, ToastContainer } from "react-toastify";
 import 'react-toastify/dist/ReactToastify.css';
+import { TodayMatch } from "./Home";
 
 interface RoundPanelProps {
+  todayMatches: TodayMatch[];
   matchData: MatchDoc[];
 }
 
-const RoundPanel = ({ matchData }: RoundPanelProps) => {
+const RoundPanel = ({ matchData , todayMatches}: RoundPanelProps) => {
   const [matches, setMatches] = useState<Match[]>([]);
   const [loading, setLoading] = useState(true);
   const { userTips } = useTipSelection();
@@ -97,7 +99,7 @@ const RoundPanel = ({ matchData }: RoundPanelProps) => {
         </div>
         <div className="mx-1 my-2">
           {matches.map((match, index) => (
-            <MatchItem key={index} matchData={match} />
+            <MatchItem key={index} todayMatches={todayMatches}/>
           ))}
         </div>
         <div className="m-3"></div>

@@ -103,11 +103,11 @@ const Home = ({ matchData }: HomeProps) => {
             (actualTips && actualTips.length > 0 ? (
               <ActualTips todayMatches={todayMatches} />
             ) : (
-              <RoundPanel matchData={matchData} />
+              <RoundPanel matchData={matchData} todayMatches={todayMatches}/>
             ))}
         </>
       ) : (
-        <RoundPanel matchData={matchData} />
+        <RoundPanel matchData={matchData} todayMatches={todayMatches}/>
       )}
     </div>
   );
