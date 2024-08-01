@@ -17,7 +17,7 @@ interface RoundPanelProps {
 
 const RoundPanel = ({ matchData }: RoundPanelProps) => {
   const [matches, setMatches] = useState<Match[]>([]);
-  const [loading, setLoading] = useState(true);
+  const [loading, setLoading] = useState(false);
   const { userTips } = useTipSelection();
   const { userAuth } = useAuthContext();
   const { isOpen, onOpen, onClose } = useDisclosure();
@@ -39,6 +39,14 @@ const RoundPanel = ({ matchData }: RoundPanelProps) => {
   }, [matches]);
 
   const handleModalSubmitAlert = () => {
+    if (userTips.tips.length !== 10) {
+      toast.warning('Você deve selecionar um palpite de todos os jogos.', {
+        position: "top-center",
+        autoClose: 5000,
+      });
+      setLoading(false);
+      return;
+    }
     setLoading(true);
     onOpen();
     setLoading(false);
@@ -46,7 +54,7 @@ const RoundPanel = ({ matchData }: RoundPanelProps) => {
 
   const handleTipsSubmit = async () => {
     try {
-      setLoading(true);
+      setLoading(true);    
       const now = dayjs();
       const cutoffDateTime = dayjs('2024-07-12T09:30:00');
 
