@@ -18,7 +18,7 @@ interface RoundPanelProps {
 }
 
 const RoundPanel = ({ matchData , todayMatches}: RoundPanelProps) => {
-  const [matches, setMatches] = useState<Match[]>([]);
+  const [matches, setMatches] = useState<TodayMatch[]>([]);
   const [loading, setLoading] = useState(true);
   const { userTips } = useTipSelection();
   const { userAuth } = useAuthContext();
@@ -26,10 +26,11 @@ const RoundPanel = ({ matchData , todayMatches}: RoundPanelProps) => {
   const router = useRouter();
 
   useEffect(() => {
-    if (matchData && matchData.length > 0) {
-      setMatches(Object.values(matchData[0].partidas));
+    if (todayMatches && todayMatches.length > 0) {
+      // setMatches(Object.values(matchData[0].partidas));
+      setMatches(todayMatches);
     }
-  }, [matchData]);
+  }, [matchData, todayMatches]);
 
   useEffect(() => {
     if (matches.length > 0) {
@@ -99,7 +100,7 @@ const RoundPanel = ({ matchData , todayMatches}: RoundPanelProps) => {
         </div>
         <div className="mx-1 my-2">
           {matches.map((match, index) => (
-            <MatchItem key={index} todayMatches={todayMatches}/>
+            <MatchItem key={index} todayMatch={match}/>
           ))}
         </div>
         <div className="m-3"></div>

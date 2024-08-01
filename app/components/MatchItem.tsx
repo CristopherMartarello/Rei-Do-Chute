@@ -8,15 +8,15 @@ import { format } from "date-fns";
 import { ptBR } from "date-fns/locale";
 
 interface MatchItemProps {
-  todayMatches: TodayMatch[];
+  todayMatch: TodayMatch;
 }
 
-const MatchItem = ({ todayMatches }: MatchItemProps) => {
+const MatchItem = ({ todayMatch }: MatchItemProps) => {
   const [selectedTeam, setSelectedTeam] = useState<string | null>(null);
   const { userTips, handleTipSelection } = useTipSelection();
 
   useEffect(() => {
-    console.log(userTips);  
+    console.log(userTips);
   }, [userTips]);
 
   const renderLogoTime = (team: string) => {
@@ -82,30 +82,29 @@ const MatchItem = ({ todayMatches }: MatchItemProps) => {
   };
 
   return (
-    <div className="flex flex-col justify-center items-center p-3 m-[8px] gap-[7px] bg-neutral-900 rounded-xl">
-      {todayMatches.map((match) => (
-        <div key={match.id} className="flex flex-col justify-center items-center p-3 m-[8px] gap-[7px] bg-neutral-800 rounded-xl">
+    <div className="flex flex-col justify-center items-center p-2 m-[8px] gap-[7px] bg-neutral-900 rounded-xl">
+        <div key={todayMatch.id} className="flex flex-col justify-center items-center p-3 w-full gap-[7px] bg-neutral-800 rounded-xl">
           <div className="flex justify-between">
             <span className="text-white text-[10px]">
-              {capitalizeFirstLetter(formatDate(match.utcDate))} -
-              {new Date(match.utcDate).toLocaleTimeString([], {
+              {capitalizeFirstLetter(formatDate(todayMatch.utcDate))} -
+              {new Date(todayMatch.utcDate).toLocaleTimeString([], {
                 hour: "2-digit",
                 minute: "2-digit",
-              })} - {match.area.name}
+              })} - {todayMatch.area.name}
             </span>
           </div>
           <div className="flex items-center mb-4">
             <Image
-              src={renderLogoTime(match.homeTeam.name)}
-              alt={`Logo do ${match.homeTeam.name}`}
+              src={renderLogoTime(todayMatch.homeTeam.name)}
+              alt={`Logo do ${todayMatch.homeTeam.name}`}
               width={65}
               height={65}
               className="object-cover"
             />
             <span className="m-4 text-white">vs</span>
             <Image
-              src={renderLogoTime(match.awayTeam.name)}
-              alt={`Logo do ${match.awayTeam.name}`}
+              src={renderLogoTime(todayMatch.awayTeam.name)}
+              alt={`Logo do ${todayMatch.awayTeam.name}`}
               width={65}
               height={65}
               className="object-cover"
@@ -114,29 +113,28 @@ const MatchItem = ({ todayMatches }: MatchItemProps) => {
           <div className="flex justify-center items-center gap-[7px]">
             <ButtonGroup size="sm">
               <Button
-                className={`${selectedTeam === match.homeTeam.name ? 'bg-yellow-600' : 'bg-zinc-600'} text-white w-20`}
-                onClick={() => handleButtonClick(match.homeTeam.name, match)}
-                disabled={!!selectedTeam && selectedTeam !== match.homeTeam.name}>
-                {match.homeTeam.name}
+                className={`${selectedTeam === todayMatch.homeTeam.name ? 'bg-yellow-600' : 'bg-zinc-600'} text-white w-28`}
+                onClick={() => handleButtonClick(todayMatch.homeTeam.name, todayMatch)}
+                disabled={!!selectedTeam && selectedTeam !== todayMatch.homeTeam.name}>
+                {todayMatch.homeTeam.shortName}
               </Button>
               <Divider className="bg-yellow-400" orientation="vertical" />
               <Button
-                className={`${selectedTeam === `Empate (${match.homeTeam.name} x ${match.awayTeam.name})` ? 'bg-yellow-600' : 'bg-zinc-600'} text-white w-20`}
-                onClick={() => handleButtonClick(`Empate (${match.homeTeam.name} x ${match.awayTeam.name})`, match)}
-                disabled={!!selectedTeam && selectedTeam !== `Empate (${match.homeTeam.name} x ${match.awayTeam.name})`}>
+                className={`${selectedTeam === `Empate (${todayMatch.homeTeam.name} x ${todayMatch.awayTeam.name})` ? 'bg-yellow-600' : 'bg-zinc-600'} text-white w-24`}
+                onClick={() => handleButtonClick(`Empate (${todayMatch.homeTeam.name} x ${todayMatch.awayTeam.name})`, todayMatch)}
+                disabled={!!selectedTeam && selectedTeam !== `Empate (${todayMatch.homeTeam.name} x ${todayMatch.awayTeam.name})`}>
                 Empate
               </Button>
               <Divider className="bg-yellow-400" orientation="vertical" />
               <Button
-                className={`${selectedTeam === match.awayTeam.name ? 'bg-yellow-600' : 'bg-zinc-600'} text-white w-20`}
-                onClick={() => handleButtonClick(match.awayTeam.name, match)}
-                disabled={!!selectedTeam && selectedTeam !== match.awayTeam.name}>
-                {match.awayTeam.name}
+                className={`${selectedTeam === todayMatch.awayTeam.name ? 'bg-yellow-600' : 'bg-zinc-600'} text-white w-28`}
+                onClick={() => handleButtonClick(todayMatch.awayTeam.name, todayMatch)}
+                disabled={!!selectedTeam && selectedTeam !== todayMatch.awayTeam.name}>
+                {todayMatch.awayTeam.shortName}
               </Button>
             </ButtonGroup>
           </div>
         </div>
-      ))}
     </div>
   );
 };
