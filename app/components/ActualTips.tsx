@@ -4,13 +4,11 @@ import { useEffect, useState } from "react";
 import { Card, CardBody, Divider } from "@nextui-org/react";
 import Image from "next/image";
 import { useAuthContext } from "../context/AuthContext";
-import { getActualTipsFromUser, getUserByAuthId } from "../firebase/user";
+import { getActualTipsFromUser, getUserByAuthId, updateUserTipCount } from "../firebase/user";
 import { TodayMatch } from "./Home";
 import { format } from "date-fns";
 import { ptBR } from "date-fns/locale";
-import { RiCloseCircleFill } from "react-icons/ri";
-import { RiCheckboxCircleFill } from "react-icons/ri";
-
+import { RiCloseCircleFill, RiCheckboxCircleFill } from "react-icons/ri";
 
 interface UserTip {
   matchId: string;
@@ -24,8 +22,8 @@ interface LiveMatchesProps {
 const ActualTips = ({ todayMatches }: LiveMatchesProps) => {
   const [actualTips, setActualTips] = useState<UserTip[]>([]);
   const [loading, setLoading] = useState(true);
+  const [correctTips, setCorrectTips] = useState(0);
   const { userAuth } = useAuthContext();
-  console.log(todayMatches);
 
   useEffect(() => {
     const fetchUserTips = async () => {
@@ -46,9 +44,60 @@ const ActualTips = ({ todayMatches }: LiveMatchesProps) => {
     fetchUserTips();
   }, [userAuth]);
 
-  if (loading) {
-    return <div className="text-white">Carregando...</div>;
-  }
+  useEffect(() => {
+    const interval = setInterval(() => {   
+      const lastMatch = todayMatches[9];
+      if (lastMatch && lastMatch.status === 'FINISHED') {
+        const lastMatchDate = new Date(lastMatch.utcDate);
+        const currentTime = new Date();
+        const timeDifference = currentTime.getTime() - lastMatchDate.getTime();
+        const hoursDifference = timeDifference / (1000 * 60 * 60);
+        
+        if (hoursDifference >= 2.5) {
+          console.log("passaram-se 2,5 horas");
+          checkUserTips();
+        }
+      }
+    }, 1 * 60 * 1000);
+  
+    return () => clearInterval(interval);
+  }, [todayMatches, actualTips]);
+  
+  const checkUserTips = () => {
+    let correctCount = 0;
+  
+    todayMatches.forEach((match, index) => {
+      if (match.status === "FINISHED" && actualTips[index]) {
+        const homeScore = match.score.fullTime.home;
+        const awayScore = match.score.fullTime.away;
+        const winningTeam =
+          homeScore > awayScore
+            ? match.homeTeam.name
+            : awayScore > homeScore
+            ? match.awayTeam.name
+            : "DRAW";
+  
+        const tip = actualTips[index];
+        const selectedTeam = tip.selectedTeam.includes("Empate") ? "DRAW" : tip.selectedTeam;
+        if (selectedTeam === winningTeam || (winningTeam === "DRAW" && selectedTeam === "DRAW")
+        ) {
+          correctCount++;
+        }
+      }
+    });
+  
+    setCorrectTips(correctCount);
+  
+    // if (userAuth) {
+    //   try {
+    //     updateUserTipCount(userAuth.uid, correctCount);
+    //   } catch (error) {
+    //     console.error(`Erro ao atualizar o contador de palpites para o usuário ${userAuth.uid}:`, error);
+    //   }
+    // }
+  };
+  
+
 
   const renderLogoTime = (team: string) => {
     switch (team) {

@@ -11,7 +11,7 @@ export default async function getTodayMatches() {
 
   const diffDays = diffTime / (1000 * 60 * 60 * 24);
 
-  const round = 18 + Math.floor(diffDays / 3.5);
+  const round = 13 + Math.floor(diffDays / 3.5);
   const response = await fetch(`https://api.football-data.org/v4/competitions/BSA/matches?matchday=${round}`, {
     method: "GET",
     headers: {

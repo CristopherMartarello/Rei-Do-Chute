@@ -62,3 +62,7 @@ export const getUserByAuthId = async (authUid: string) => {
     throw new Error("Usuário não encontrado...");
   }
 };
+
+export async function updateUserTipCount(userId: string, correctCount: number) {
+  
+}
