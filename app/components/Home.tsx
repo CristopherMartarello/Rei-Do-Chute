@@ -80,7 +80,7 @@ const Home = ({ matchData }: HomeProps) => {
         const isAfterMatch = now > firstMatchTime;
         setIsAfterMatch(isAfterMatch);
         //pra testar habilita o set abaixo
-        //setIsAfterMatch(true);
+        // setIsAfterMatch(true);
       }
     };
 

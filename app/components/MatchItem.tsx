@@ -86,7 +86,7 @@ const MatchItem = ({ todayMatch }: MatchItemProps) => {
         <div key={todayMatch.id} className="flex flex-col justify-center items-center p-3 w-full gap-[7px] bg-neutral-800 rounded-xl">
           <div className="flex justify-between">
             <span className="text-white text-[10px]">
-              {capitalizeFirstLetter(formatDate(todayMatch.utcDate))} -
+              {capitalizeFirstLetter(formatDate(todayMatch.utcDate))} {" - "} 
               {new Date(todayMatch.utcDate).toLocaleTimeString([], {
                 hour: "2-digit",
                 minute: "2-digit",
@@ -113,7 +113,7 @@ const MatchItem = ({ todayMatch }: MatchItemProps) => {
           <div className="flex justify-center items-center gap-[7px]">
             <ButtonGroup size="sm">
               <Button
-                className={`${selectedTeam === todayMatch.homeTeam.name ? 'bg-yellow-600' : 'bg-zinc-600'} text-white w-28`}
+                className={`${selectedTeam === todayMatch.homeTeam.name ? 'bg-yellow-600' : 'bg-zinc-600'} text-white w-24 truncate`}
                 onClick={() => handleButtonClick(todayMatch.homeTeam.name, todayMatch)}
                 disabled={!!selectedTeam && selectedTeam !== todayMatch.homeTeam.name}>
                 {todayMatch.homeTeam.shortName}
@@ -127,7 +127,7 @@ const MatchItem = ({ todayMatch }: MatchItemProps) => {
               </Button>
               <Divider className="bg-yellow-400" orientation="vertical" />
               <Button
-                className={`${selectedTeam === todayMatch.awayTeam.name ? 'bg-yellow-600' : 'bg-zinc-600'} text-white w-28`}
+                className={`${selectedTeam === todayMatch.awayTeam.name ? 'bg-yellow-600' : 'bg-zinc-600'} text-white w-24 truncate`}
                 onClick={() => handleButtonClick(todayMatch.awayTeam.name, todayMatch)}
                 disabled={!!selectedTeam && selectedTeam !== todayMatch.awayTeam.name}>
                 {todayMatch.awayTeam.shortName}
